@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+		<meta charset="UTF-8">
+		<title> Lista de Usuarios </title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">		 
+	</head>
+    <body></br></br></br></br></br>
+        <div align="center">
+        <div align="center" class="border">
+            <div class="header">
+                <h1 class="word">Usuarios</h1>
+            </div></br></br></br>
+    <table>
+        <tr>
+            <th style="border: 1px solid white;">ID</th>
+            <th style="border: 1px solid white;">Usuario</th>
+            <th style="border: 1px solid white;">Password</th>
+            <th style="border: 1px solid white;">mail</th>
+            <th style="border: 1px solid white;">tipo</th>
+        </tr>
+        {% for usuario in usuarios %}
+        <tr>
+            <td style="border: 1px solid white;">{{ usuario[0] }}</td>
+            <td style="border: 1px solid white;">{{ usuario[1] }}</td>
+            <td style="border: 1px solid white;">{{ usuario[2] }}</td>
+            <td style="border: 1px solid white;">{{ usuario[3] }}</td>
+            <td style="border: 1px solid white;">{{ usuario[4] }}</td>
+            </>
+        </tr>
+        {% endfor %}
+    </table>
+</br></br></br>
+<input type="button" class="btn" value="Página anterior" onClick="history.go(-1);">
+</body>
+</html>

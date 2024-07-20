@@ -2,7 +2,7 @@
 <html>
     <head>
 		<meta charset="UTF-8">
-		<title> Administración </title>
+		<title> index </title>
 		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">					 
 	</head>
     <body></br></br></br></br></br>
@@ -11,15 +11,13 @@
 			<div class="header">
 				<h1 class="word">Menú Principal</h1>
 			</div></br></br></br>
-            <ul>
-                <a href="{{ url_for('registro_salas') }}" class="btn">Alta de Salas</a></br></br></br>
-                <a href="{{ url_for('baja_salas') }}" class="btn">Baja de Salas</a></br></br></br>
-                
-            </ul>
+				
+			<a href="{{ url_for('lista_salas') }}" class="btn">listar_salas</a>
+			
 				<h1 class="bottom">
 									 
 				</h1></br></br></br>
-				<a href="{{ url_for('logout') }}" class="btn">Cerrar Sesión</a>
+				
 		</div>
 		</div>
 	</body
