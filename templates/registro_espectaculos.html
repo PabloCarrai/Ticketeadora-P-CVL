@@ -15,7 +15,9 @@
 			<h2 class="word">
 				<form action="{{ url_for('registro_espectaculos') }}" method="post">
 				<div class="msg">{{ msg }}</div>
+<!--
 # editado por Sergio Giacomini 21/07/2024
+-->
 				{% if not espectaculo: %}
 					<select name="ID_SALA" class="textbox">
 						{% for sala in salas %}
@@ -24,13 +26,17 @@
 					</select>
 					</br></br>
 					<input type="hidden" name="ID_ESP" type="text" class="textbox"/>
+<!--
 # Fin editado por Sergio Giacomini 21/07/2024					
+-->
 					<input ID_ESP="TITULO_DEL_ESPECTACULO" name="TITULO_DEL_ESPECTACULO" type="text" placeholder="TITULO_DEL_ESPECTACULO" class="textbox"/></br></br>
 					<input ID_ESP="FECHA" name="FECHA" type="text" placeholder="FECHA" class="textbox"/></br></br>
                     <input ID_ESP="HORA" name="HORA" type="text" placeholder="HORA" class="textbox"/></br></br>
                     <input ID_ESP="ENTRADA_NRO" name="ENTRADA_NRO" type="int" placeholder="ENTRADA_NRO" class="textbox"/></br></br>
                     <input ID_ESP="PRECIO_UNITARIO" name="PRECIO_UNITARIO" type="decimal(10,2)" placeholder="PRECIO_UNITARIO" class="textbox"/></br></br>
+<!--					
 # editado por Sergio Giacomini 21/07/2024
+-->
 				{% else %}
 					<select name="ID_SALA">
 						{% for sala in salas %}
@@ -45,9 +51,13 @@
 					<input ID_ESP="ENTRADA_NRO" name="ENTRADA_NRO" type="int" placeholder="ENTRADA_NRO" class="textbox" value="{{ espectaculo[0]["ENTRADA_NRO"] }}"/></br></br>
 					<input ID_ESP="PRECIO_UNITARIO" name="PRECIO_UNITARIO" type="decimal(10,2)" placeholder="PRECIO_UNITARIO" class="textbox" value="{{ espectaculo[0]["PRECIO_UNITARIO"] }}"/></br></br>
 				{% endif %}
-# fin editado por Sergio Giacomini 21/07/2024				
+<!--
+	# fin editado por Sergio Giacomini 21/07/2024				
+-->
 					<input type="submit" class="btn" value="Registro"></br></br>
+<!--
 # editado por Sergio Giacomini 21/07/2024
+-->
 					<input type="button" class="btn" value="Página anterior" onclick="location.href='/lista_espectaculos'">
 				</form>
 			</h2>
