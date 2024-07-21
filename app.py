@@ -90,7 +90,21 @@ def lista_salas():
 @app.route('/registro_espectaculos', methods =['GET', 'POST'])
 def registro_espectaculos():
 	msg = ''
+
+# editado por Sergio Giacomini 21/07/2024
+	query = ("SELECT " 
+		"	  SAL.ID_SALA " +
+		"	, SAL.NOMBRE_DE_LA_SALA " +
+		" FROM " + 
+		" 	SAL_SALAS SAL "
+		)
+	
+	cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+	cursor.execute(query)
+	salas = cursor.fetchall()
+
 	if request.method == 'POST':
+		ID_ESP = request.form['ID_ESP']
 		ID_SALA = request.form['ID_SALA']
 		TITULO_DEL_ESPECTACULO = request.form['TITULO_DEL_ESPECTACULO']
 		FECHA = request.form['FECHA']
@@ -98,21 +112,100 @@ def registro_espectaculos():
 		ENTRADA_NRO = request.form['ENTRADA_NRO']
 		PRECIO_UNITARIO = request.form['PRECIO_UNITARIO']
 		cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-		cursor.execute('INSERT INTO ESP_ESPECTACULOS VALUES (NULL, % s, % s, % s, % s, % s, % s)', (ID_SALA, TITULO_DEL_ESPECTACULO, FECHA, HORA, ENTRADA_NRO, PRECIO_UNITARIO))
-		mysql.connection.commit()
-		msg = 'Se ha registrado exitosamente !'
-	return render_template('registro_espectaculos.html')
+		
+		if ID_ESP == "":
+			cursor.execute('INSERT INTO ESP_ESPECTACULOS VALUES (NULL, % s, % s, % s, % s, % s, % s)', (ID_SALA, TITULO_DEL_ESPECTACULO, FECHA, HORA, ENTRADA_NRO, PRECIO_UNITARIO))
+			msg = 'Se ha registrado exitosamente !'
+			mysql.connection.commit()
+			return render_template('registro_espectaculos.html', salas=salas)
+		else:
+			cursor.execute('UPDATE ESP_ESPECTACULOS SET ID_SALA = % s, TITULO_DEL_ESPECTACULO = % s, FECHA = % s, HORA = % s, ENTRADA_NRO = % s, PRECIO_UNITARIO = % s WHERE ID_ESP = % s', (ID_SALA, TITULO_DEL_ESPECTACULO, FECHA, HORA, ENTRADA_NRO, PRECIO_UNITARIO, ID_ESP))
+			msg = 'El espectaculo se ha modificado exitosamente !'
+			mysql.connection.commit()
+			return redirect(url_for('lista_espectaculos'))
+
+	if request.method == 'GET':
+		return render_template('registro_espectaculos.html', salas=salas)
+# fin editado por Sergio Giacomini 21/07/2024
 
 #LISTA LOS ESPECTACULOS REGISTRADOS
-@app.route('/')
 @app.route('/lista_espectaculos')
 def lista_espectaculos():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT ID_ESP, ID_SALA,TITULO_DEL_ESPECTACULO, FECHA, HORA, ENTRADA_NRO,PRECIO_UNITARIO FROM ESP_ESPECTACULOS")
+# editado por Sergio Giacomini 21/07/2024	
+    cur.execute("SELECT ESP.ID_ESP, ESP.ID_SALA, ESP.TITULO_DEL_ESPECTACULO, ESP.FECHA, ESP.HORA, ESP.ENTRADA_NRO, ESP.PRECIO_UNITARIO, SAL.NOMBRE_DE_LA_SALA, " +
+				" (SELECT COALESCE(SUM(CANT),0) FROM VEN_VENTAS WHERE ID_ESP = ESP.ID_ESP) AS CANTIDAD_VENDIDA"
+				" FROM ESP_ESPECTACULOS ESP INNER JOIN SAL_SALAS SAL ON SAL.ID_SALA = ESP.ID_SALA")
+# Fin editado por Sergio Giacomini 21/07/2024
     espectaculos = cur.fetchall()
     cur.close()
     return render_template('lista_espectaculos.html', espectaculos=espectaculos)
 
+# editado por Sergio Giacomini 21/07/2024
+# MODIFICAR ESPECTACULO
+@app.route('/modificar_espectaculo', methods =['POST'])
+def modificar_espectaculo():
+	ID_ESPECTACULO = request.form['ID_ESPECTACULO']
+
+	query = ("SELECT " 
+		"	  * " +
+		" FROM " + 
+		" 	ESP_ESPECTACULOS "
+		" 	WHERE ID_ESP = " + ID_ESPECTACULO
+		)
+
+	cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+	cursor.execute(query)
+	espectaculo = cursor.fetchall()
+
+	query = ("SELECT " 
+		"	  SAL.ID_SALA " +
+		"	, SAL.NOMBRE_DE_LA_SALA " +
+		" FROM " + 
+		" 	SAL_SALAS SAL "
+		)
+	
+	cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+	cursor.execute(query)
+	salas = cursor.fetchall()
+
+	return render_template('registro_espectaculos.html', espectaculo=espectaculo, salas=salas)
+
+#ELIMINA ESPECTACULOS - (Consulta previa)
+@app.route('/consulta_elimina_espectaculo', methods =['POST'])
+def consulta_elimina_espectaculo():
+	ID_ESPECTACULO = request.form['ID_ESPECTACULO']
+
+	query = ("SELECT " +
+		"	  * " +
+		" FROM " + 
+		" 	ESP_ESPECTACULOS "
+		" 	WHERE ID_ESP = " + ID_ESPECTACULO
+	)
+
+	cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+	cursor.execute(query)
+	espectaculo = cursor.fetchall()
+
+	return render_template('consulta_elimina_espectaculo.html', espectaculo=espectaculo)
+
+#ELIMINA ESPECTACULOS
+@app.route('/elimina_espectaculo', methods =['POST'])
+def elimina_espectaculo():
+		ID_ESPECTACULO = request.form['ID_ESPECTACULO']
+
+		query = ("DELETE " 
+			" FROM " + 
+			" 	ESP_ESPECTACULOS "
+			" 	WHERE ID_ESP = " + ID_ESPECTACULO
+			)
+
+		cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+		cursor.execute(query)
+		mysql.connection.commit()
+
+		return redirect(url_for('lista_espectaculos'))
+# Fin editado por Sergio Giacomini 21/07/2024
+
 if __name__ == '__main__':
     app.run(debug=True)
-    

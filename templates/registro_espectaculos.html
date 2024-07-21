@@ -15,14 +15,40 @@
 			<h2 class="word">
 				<form action="{{ url_for('registro_espectaculos') }}" method="post">
 				<div class="msg">{{ msg }}</div>
-					<input ID_ESP="ID_SALA" name="ID_SALA" type="int" placeholder="ID_DE_LA_SALA" class="textbox"/></br></br>
+# editado por Sergio Giacomini 21/07/2024
+				{% if not espectaculo: %}
+					<select name="ID_SALA" class="textbox">
+						{% for sala in salas %}
+						<option value='{{ sala["ID_SALA"] }}'>{{ sala["NOMBRE_DE_LA_SALA"] }}</option>  
+						{% endfor %}
+					</select>
+					</br></br>
+					<input type="hidden" name="ID_ESP" type="text" class="textbox"/>
+# Fin editado por Sergio Giacomini 21/07/2024					
 					<input ID_ESP="TITULO_DEL_ESPECTACULO" name="TITULO_DEL_ESPECTACULO" type="text" placeholder="TITULO_DEL_ESPECTACULO" class="textbox"/></br></br>
 					<input ID_ESP="FECHA" name="FECHA" type="text" placeholder="FECHA" class="textbox"/></br></br>
                     <input ID_ESP="HORA" name="HORA" type="text" placeholder="HORA" class="textbox"/></br></br>
                     <input ID_ESP="ENTRADA_NRO" name="ENTRADA_NRO" type="int" placeholder="ENTRADA_NRO" class="textbox"/></br></br>
                     <input ID_ESP="PRECIO_UNITARIO" name="PRECIO_UNITARIO" type="decimal(10,2)" placeholder="PRECIO_UNITARIO" class="textbox"/></br></br>
+# editado por Sergio Giacomini 21/07/2024
+				{% else %}
+					<select name="ID_SALA">
+						{% for sala in salas %}
+						<option value='{{ sala["ID_SALA"] }}' {% if sala["ID_SALA"] == espectaculo[0]["ID_SALA"] %} selected="selected" {% endif %}>{{ sala["NOMBRE_DE_LA_SALA"] }}</option>  
+						{% endfor %}
+					</select>
+					</br></br>
+					<input type="hidden" name="ID_ESP" type="text" class="textbox" value='{{ espectaculo[0]["ID_ESP"] }}'/>
+					<input ID_ESP="TITULO_DEL_ESPECTACULO" name="TITULO_DEL_ESPECTACULO" type="text" placeholder="TITULO_DEL_ESPECTACULO" value="{{ espectaculo[0]["TITULO_DEL_ESPECTACULO"] }}" class="textbox"/></br></br>
+					<input ID_ESP="FECHA" name="FECHA" type="text" placeholder="FECHA" class="textbox" value="{{ espectaculo[0]["FECHA"] }}"/></br></br>
+					<input ID_ESP="HORA" name="HORA" type="text" placeholder="HORA" class="textbox" value="{{ espectaculo[0]["HORA"] }}"/></br></br>
+					<input ID_ESP="ENTRADA_NRO" name="ENTRADA_NRO" type="int" placeholder="ENTRADA_NRO" class="textbox" value="{{ espectaculo[0]["ENTRADA_NRO"] }}"/></br></br>
+					<input ID_ESP="PRECIO_UNITARIO" name="PRECIO_UNITARIO" type="decimal(10,2)" placeholder="PRECIO_UNITARIO" class="textbox" value="{{ espectaculo[0]["PRECIO_UNITARIO"] }}"/></br></br>
+				{% endif %}
+# fin editado por Sergio Giacomini 21/07/2024				
 					<input type="submit" class="btn" value="Registro"></br></br>
-					<input type="button" class="btn" value="Página anterior" onClick="history.go(-1);">
+# editado por Sergio Giacomini 21/07/2024
+					<input type="button" class="btn" value="Página anterior" onclick="location.href='/lista_espectaculos'">
 				</form>
 			</h2>
 		</div>

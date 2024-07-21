@@ -11,30 +11,50 @@
             <div class="header">
                 <h1 class="word">Eventos</h1>
             </div></br></br></br>
-    <table>
-        <tr>
-            <th style="border: 1px solid white;">ID</th>
-            <th style="border: 1px solid white;">sala</th>
-            <th style="border: 1px solid white;">Título</th>
-            <th style="border: 1px solid white;">Fecha</th>
-            <th style="border: 1px solid white;">Hora</th>
-            <th style="border: 1px solid white;">Vendidas</th>
-            <th style="border: 1px solid white;">Precio $</th>
-        </tr>
-        {% for espectaculo in espectaculos %}
-        <tr>
-            <td style="border: 1px solid white;">{{ espectaculo[0] }}</td>
-            <td style="border: 1px solid white;">{{ espectaculo[1] }}</td>
-            <td style="border: 1px solid white;">{{ espectaculo[2] }}</td>
-            <td style="border: 1px solid white;">{{ espectaculo[3] }}</td>
-            <td style="border: 1px solid white;">{{ espectaculo[4] }}</td>
-            <td style="border: 1px solid white;">{{ espectaculo[5] }}</td>
-            <td style="border: 1px solid white;">{{ espectaculo[6] }}</td>
-            <td style="border: 1px solid white;">{{ espectaculo[7] }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-</br></br></br>
-<input type="button" class="btn" value="Página anterior" onClick="history.go(-1);">
-</body>
+        <table>
+            <tr>
+                <th style="border: 1px solid white;">ID</th>
+                <th style="border: 1px solid white;">sala</th>
+                <th style="border: 1px solid white;">Título</th>
+                <th style="border: 1px solid white;">Fecha</th>
+                <th style="border: 1px solid white;">Hora</th>
+# editado por Sergio Giacomini 21/07/2024                
+                <th style="border: 1px solid white;">Capacidad</th>
+                <th style="border: 1px solid white;">Precio $</th>
+# Fin editado por Sergio Giacomini 21/07/2024
+                <th style="border: 1px solid white;">Vendidas</th>
+            </tr>
+            {% for espectaculo in espectaculos %}
+            <tr>
+                <td style="border: 1px solid white;">{{ espectaculo[0] }}</td>
+# editado por Sergio Giacomini 21/07/2024
+                <td style="border: 1px solid white;">{{ espectaculo[7] }}</td>
+# Fin editado por Sergio Giacomini 21/07/2024
+                <td style="border: 1px solid white;">{{ espectaculo[2] }}</td>
+                <td style="border: 1px solid white;">{{ espectaculo[3] }}</td>
+                <td style="border: 1px solid white;">{{ espectaculo[4] }}</td>
+                <td style="border: 1px solid white;">{{ espectaculo[5] }}</td>
+                <td style="border: 1px solid white;">{{ espectaculo[6] }}</td>
+                <td style="border: 1px solid white;">{{ espectaculo[8] }}</td>
+# editado por Sergio Giacomini 21/07/2024                
+                <td style="border: 1px solid white;">
+                    <form method="post" action="{{ url_for('consulta_elimina_espectaculo') }}">
+                        <input type="hidden" name="ID_ESPECTACULO" value="{{ espectaculo[0] }}">
+                        <input type="submit" value="Eliminar" class="btnchico">
+                    </form>
+                </td>
+                <td style="border: 1px solid white;">
+                    <form method="post" action="{{ url_for('modificar_espectaculo') }}">
+                        <input type="hidden" name="ID_ESPECTACULO" value="{{ espectaculo[0] }}">
+                        <input type="submit" value="Modificar" class="btnchico">
+                    </form>
+                </td>
+#Fin editado por Sergio Giacomini 21/07/2024                
+            </tr>
+            {% endfor %}
+        </table>
+        </br></br></br>
+# editado por Sergio Giacomini 21/07/2024        
+        <input type="button" class="btn" value="Página anterior" onclick="location.href='/'">
+    </body>
 </html>
