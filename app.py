@@ -5,6 +5,10 @@ import re
 import credenciales_ticketeadora as mycreds
 app = Flask(__name__)
 
+#Guido new 22/07/24
+app.secret_key = 'test123'
+#Guido new 22/07/24
+
 # Configuración de la base de datos MySQL
 app.config['MYSQL_HOST'] = mycreds.host
 app.config['MYSQL_USER'] = mycreds.user
@@ -14,10 +18,77 @@ app.config['MYSQL_PORT'] = mycreds.port
 
 mysql = MySQL(app)
 
-#ABRE LA PAGINA INICIAL DE ADMINISTRACION
-@app.route('/')
+#Guido new 22/07/24 (agregue home)
+@app.route('/home')
 def home():
     return render_template('home.html')
+
+ #ABRE LA PAGINA INICIAL DE INICIO DE SESION/REGISTRO
+@app.route('/')
+@app.route('/login', methods =['GET', 'POST'])
+def login():
+	msg = ''
+	if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
+		username = request.form['username']
+		password = request.form['password']
+		cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+		cursor.execute('SELECT * FROM USR_USUARIOS WHERE username = % s AND password = % s', (username, password, ))
+		account = cursor.fetchone()
+		if account:
+			session['loggedin'] = True
+			session['id'] = account['id']
+			session['username'] = account['username']
+			if account['tipo'] == "admin":
+				return render_template('home.html')
+			else:
+				return redirect(url_for('lista_espectaculos_compra'))			
+		else:
+			msg = 'usuario / contraseña Incorrectos!'
+	return render_template('login.html', msg = msg)
+
+@app.route('/logout')
+def logout():
+	session.pop('loggedin', None)
+	session.pop('id', None)
+	session.pop('username', None)
+	return redirect(url_for('login'))
+
+@app.route('/register_comprador', methods =['GET', 'POST'])
+def register_comprador():
+	msg = ''
+	if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'email' in request.form: # and 'tipo' in request.form:
+		username = request.form['username']
+		password = request.form['password']
+		email = request.form['email']
+		tipo = "" #request.form['tipo']
+		cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+		cursor.execute('SELECT * FROM USR_USUARIOS WHERE username = % s', (username, ))
+		account = cursor.fetchone()
+
+		# Verificar si el email ya existe
+		cursor.execute('SELECT * FROM USR_USUARIOS WHERE email = %s', (email,))
+		email_account = cursor.fetchone()
+
+		if account:
+			msg = 'La cuenta ya existe !'
+		# Valida que el mail no esté registrado
+		elif email_account:
+			msg = 'El email ya está registrado !'
+
+		elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+			msg = 'email Invalido !'
+		elif not re.match(r'[A-Za-z0-9]+', username):
+			msg = 'El Usuario debe iniciar con caracteres o numeros !'
+		elif not username or not password or not email:
+			msg = 'Por favor complete el formulario !'
+		else:
+			cursor.execute('INSERT INTO USR_USUARIOS VALUES (NULL, % s, % s, % s, % s)', (username, password, email, tipo ))
+			mysql.connection.commit()
+			msg = 'Se ha registrado exitosamente !'
+	elif request.method == 'POST':
+		msg = 'Por favor complete el formulario !'
+	return render_template('register_comprador.html', msg = msg)
+#Guido new 22/07/24
 
 # REGISTRO DE USUARIOS QUE PERMITE INCORPORAR ADMINISTRADORES
 @app.route('/')
@@ -206,6 +277,19 @@ def elimina_espectaculo():
 
 		return redirect(url_for('lista_espectaculos'))
 # Fin editado por Sergio Giacomini 21/07/2024
+
+#GUIDO new 22/07/24
+#LISTA LOS ESPECTACULOS PARA EL COMPRADOR
+@app.route('/lista_espectaculos_compra')
+def lista_espectaculos_compra():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT ESP.ID_ESP, ESP.ID_SALA, ESP.TITULO_DEL_ESPECTACULO, ESP.FECHA, ESP.HORA, ESP.ENTRADA_NRO, ESP.PRECIO_UNITARIO, SAL.NOMBRE_DE_LA_SALA, " +
+				" (SELECT COALESCE(SUM(CANT),0) FROM VEN_VENTAS WHERE ID_ESP = ESP.ID_ESP) AS CANTIDAD_VENDIDA"
+				" FROM ESP_ESPECTACULOS ESP INNER JOIN SAL_SALAS SAL ON SAL.ID_SALA = ESP.ID_SALA")
+    espectaculos = cur.fetchall()
+    cur.close()
+    return render_template('lista_espectaculos_compra.html', espectaculos=espectaculos)
+#GUIDO new 22/07/24
 
 if __name__ == '__main__':
     app.run(debug=True)
