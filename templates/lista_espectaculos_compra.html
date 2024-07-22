@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>lista_espectaculos_compra</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">		 
+</head>
+<body></br></br></br></br></br>
+<div align="center">
+<div align="center" class="border">
+<div class="header">
+<h1 class="word">Eventos</h1>
+</div></br></br></br>
+<table>
+<tr>
+<th style="border: 1px solid white;">ID</th>
+<th style="border: 1px solid white;">sala</th>
+<th style="border: 1px solid white;">Título</th>
+<th style="border: 1px solid white;">Fecha</th>
+<th style="border: 1px solid white;">Hora</th>
+<th style="border: 1px solid white;">Capacidad</th>
+<th style="border: 1px solid white;">Precio $</th>
+<th style="border: 1px solid white;">Vendidas</th>
+<th style="border: 1px solid white;">Comprar</th>
+</tr>
+{% for espectaculo in espectaculos %}
+<tr>
+<td style="border: 1px solid white;">{{ espectaculo[0] }}</td>
+<td style="border: 1px solid white;">{{ espectaculo[7] }}</td>
+<td style="border: 1px solid white;">{{ espectaculo[2] }}</td>
+<td style="border: 1px solid white;">{{ espectaculo[3] }}</td>
+<td style="border: 1px solid white;">{{ espectaculo[4] }}</td>
+<td style="border: 1px solid white;">{{ espectaculo[5] }}</td>
+<td style="border: 1px solid white;">{{ espectaculo[6] }}</td>
+<td style="border: 1px solid white;">{{ espectaculo[8] }}</td>
+<td style="border: 1px solid white;">
+<form method="post" action="{{ url_for('modificar_espectaculo') }}">
+<input type="hidden" name="ID_ESPECTACULO" value="{{ espectaculo[0] }}">
+<input type="submit" value="Comprar" class="btnchico">
+</form>
+</td>
+</tr>
+{% endfor %}
+</table>
+</br></br></br>
+<input type="button" class="btn" value="Página anterior" onclick="location.href='/login'">
+</body>
+</html>

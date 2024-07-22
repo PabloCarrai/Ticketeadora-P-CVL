@@ -1,0 +1,52 @@
+<!-- Store this code in 'register_comprador.html' file inside the 'templates' folder -->
+
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title> Register </title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">			 
+
+<!--Guido-->
+		<script>
+			function redirectAfterDelay() {
+			setTimeout(function() {
+			window.location.href = '/previa';
+			}, 3000); // 3000 milisegundos = 3 segundos
+			}
+		</script>
+<!--Guido-->
+
+	</head>
+	<body></br></br>
+		<div align="center">
+		<div align="center" class="border">
+			<div class="header">
+				<h1 class="word">Registración</h1>
+			</div></br></br></br>
+			<h2 class="word">
+				<form action="{{ url_for('register_comprador') }}" method="post">
+				<div class="msg">{{ msg }}</div>
+
+<!--Guido-->
+				{% if msg == 'Se ha registrado exitosamente !' %}
+				<script>
+				redirectAfterDelay();
+				</script>
+				{% endif %}
+<!--Guido-->
+
+
+					<input id="username" name="username" type="text" placeholder="Introduzca su Usuario" class="textbox"/></br></br>
+					<input id="password" name="password" type="password" placeholder="Introduzca su Contraseña" class="textbox"/></br></br>
+					<input id="email" name="email" type="text" placeholder="Introduzca su email" class="textbox"/></br></br>
+				<!--	<input id="tipo" name="tipo" type="text" placeholder="Tipo de Usuario" class="textbox"/></br></br> Guido new-->
+					<input type="submit" class="btn" value="Registro"></br></br>		<!--Guido new-->
+					<input type="button" class="btn" value="Página anterior" onClick="location.href='/login'"></br></br>
+				</form>
+			</h2>
+			
+			
+		</div>
+		</div>
+	</body>
+</html>
