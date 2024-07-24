@@ -282,14 +282,51 @@ def elimina_espectaculo():
 #LISTA LOS ESPECTACULOS PARA EL COMPRADOR
 @app.route('/lista_espectaculos_compra')
 def lista_espectaculos_compra():
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT ESP.ID_ESP, ESP.ID_SALA, ESP.TITULO_DEL_ESPECTACULO, ESP.FECHA, ESP.HORA, ESP.ENTRADA_NRO, ESP.PRECIO_UNITARIO, SAL.NOMBRE_DE_LA_SALA, " +
+	cur = mysql.connection.cursor()
+# editado por Sergio Giacomini 23/07/2024
+	cur.execute("SELECT ESP.ID_ESP, ESP.ID_SALA, ESP.TITULO_DEL_ESPECTACULO, ESP.FECHA, ESP.HORA, ESP.ENTRADA_NRO, ESP.PRECIO_UNITARIO, SAL.NOMBRE_DE_LA_SALA, " +
 				" (SELECT COALESCE(SUM(CANT),0) FROM VEN_VENTAS WHERE ID_ESP = ESP.ID_ESP) AS CANTIDAD_VENDIDA"
-				" FROM ESP_ESPECTACULOS ESP INNER JOIN SAL_SALAS SAL ON SAL.ID_SALA = ESP.ID_SALA")
-    espectaculos = cur.fetchall()
-    cur.close()
-    return render_template('lista_espectaculos_compra.html', espectaculos=espectaculos)
+				" FROM ESP_ESPECTACULOS ESP INNER JOIN SAL_SALAS SAL ON SAL.ID_SALA = ESP.ID_SALA"
+				" WHERE ENTRADA_NRO > 0 AND STR_TO_DATE(FECHA, '%d/%m/%Y') > NOW()")
+# editado por Sergio Giacomini 23/07/2024
+	espectaculos = cur.fetchall()
+	cur.close()
+	return render_template('lista_espectaculos_compra.html', espectaculos=espectaculos)
 #GUIDO new 22/07/24
+
+# editado por Sergio Giacomini 23/07/2024
+@app.route('/espectaculo_compra', methods =['POST'])
+def espectaculo_compra():
+	ID_ESPECTACULO = request.form['ID_ESPECTACULO']
+	cur = mysql.connection.cursor()
+	query = ("SELECT ESP.ID_ESP, ESP.ID_SALA, ESP.TITULO_DEL_ESPECTACULO, ESP.FECHA, ESP.HORA, ESP.ENTRADA_NRO, ESP.PRECIO_UNITARIO, SAL.NOMBRE_DE_LA_SALA, "
+			" (SELECT COALESCE(SUM(CANT),0) FROM VEN_VENTAS WHERE ID_ESP = ESP.ID_ESP) AS CANTIDAD_VENDIDA" 
+			" FROM ESP_ESPECTACULOS ESP INNER JOIN SAL_SALAS SAL ON SAL.ID_SALA = ESP.ID_SALA" 
+			" WHERE ESP.ID_ESP = " + ID_ESPECTACULO)
+	
+	cur.execute(query)
+	
+	espectaculo = cur.fetchall()
+	cur.close()
+	return render_template('espectaculo_compra.html', espectaculo=espectaculo[0])
+
+@app.route('/espectaculo_compra_confirmada', methods =['POST'])
+def espectaculo_compra_confirmada():
+	ID_ESPECTACULO = request.form['ID_ESPECTACULO']
+	ENTRADA_NRO = request.form['ENTRADA_NRO']
+	
+	cur = mysql.connection.cursor()
+	query = ("UPDATE ESP_ESPECTACULOS SET ENTRADA_NRO = ENTRADA_NRO - " + ENTRADA_NRO + " WHERE ID_ESP = " + ID_ESPECTACULO)
+	cur.execute(query)
+
+	query = 'INSERT INTO VEN_VENTAS (ID_ESP, ID_USR, CANT, FECHA) VALUES (' + ID_ESPECTACULO + ',' + str(session['id']) + ',' + ENTRADA_NRO + ', NOW())' 
+	cur.execute(query)
+
+	mysql.connection.commit()
+	cur.close()
+
+	return render_template('espectaculo_compra_confirmada.html')
+# editado por Sergio Giacomini 23/07/2024
 
 if __name__ == '__main__':
     app.run(debug=True)

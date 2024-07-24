@@ -1,0 +1,53 @@
+<!--
+# editado por Sergio Giacomini 23/07/2024
+-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Compra de espectaculo</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">			 
+        <script>
+            const numInputs = document.querySelectorAll('input[type=number]')
+            
+            numInputs.forEach(function(input) {
+                input.addEventListener('change', function(e) {
+                    if (e.target.value == '') {
+                        e.target.value = 0
+                    }
+                })
+            })
+        </script>
+    </head>
+
+    <body></br>
+		<div align="center">
+		<div align="center" class="border">
+			<div class="header">
+				<h1 class="word">Espectaculo seleccionado</h1>
+			</div></br>
+			<h2 class="word">
+				<form action="{{ url_for('espectaculo_compra_confirmada') }}" method="post">
+                    {% if msg != null %}
+                    <div class="msg">{{ msg }}</div>
+                    </br>
+                    {% endif %}
+                    <input type="hidden" name="ID_ESPECTACULO" type="text" class="textbox" value='{{ espectaculo[0] }}'/>
+                    <p class="word">Nombre de la Sala: {{ espectaculo[7] }}<p>
+                    <p class="word">Espectaculo: {{ espectaculo[2] }}<p>
+                    <p class="word">Fecha: {{ espectaculo[3] }}<p></p>
+                    <p class="word">Hora: {{ espectaculo[4] }}<p></p>
+                    <p class="word">Precio : $ {{ espectaculo[6] }}<p></p>
+                    
+                    <input type="number" name="ENTRADA_NRO" placeholder="CANTIDAD DE ENTRADAS" class="textbox" min="1" max="10" required /></br></br>
+
+                    <input type="submit" class="btn" value="Comprar"></br></br>
+                    <input type="button" class="btn" value="Página anterior" onclick="location.href='/lista_espectaculos_compra'">
+				</form>
+			</h2>
+		</div>
+		</div>
+	</body>
+</html>
+<!--
+# Fin editado por Sergio Giacomini 23/07/2024
+-->
