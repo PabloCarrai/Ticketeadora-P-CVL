@@ -1,5 +1,5 @@
-<!-- Store this code in 'register.html' file inside the 'templates' folder -->
-
+<!-- Store this code in 'registro_espectaculos.html' file inside the 'templates' folder -->
+						<!--Guido new 24/07/24-->
 <html>
 	<head>
 		<meta charset="UTF-8">
@@ -57,8 +57,12 @@
 					<input type="submit" class="btn" value="Registro"></br></br>
 <!--
 # editado por Sergio Giacomini 21/07/2024
--->																						<!--Guido new 22/07/24-->
-					<input type="button" class="btn" value="Página anterior" onclick="location.href='/home'"> <!--'/lista_espectaculos'">-->
+-->
+					<!--Guido new 24/07/24-->
+																						<!--Guido new 22/07/24-->
+					<!-- <input type="button" class="btn" value="Página anterior" onclick="location.href='/home'"> '/lista_espectaculos'">-->
+					<input type="button" class="btn" value="Página anterior" onclick="location.href='{{ prev }}'">
+					<!--Guido new 24/07/24-->
 				</form>
 			</h2>
 		</div>

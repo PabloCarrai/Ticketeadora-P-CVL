@@ -5,20 +5,28 @@
 <html lang="es">
     <head>
         <meta charset="UTF-8">
-        <title> Compra </title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">		 
-    </head>    
-    <body></br>
+        <title>Compra</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+    </br>
         <div align="center">
             <div align="center" class="border">
                 <div class="header">
                     <h1 class="word">Compra</h1>
-                </div></br></br>
+                </div>
+                </br></br>
                 <h2 class="word">
                     <div class="msg">Gracias por su compra!</div>
                     <div class="msg">Pronto recibirá en su casilla de correo el detalle de la compra realizada.</div>
                 </h2>
                 <input type="button" class="btn" value="Volver" onclick="location.href='/lista_espectaculos_compra'">
+
+                <!--Guido new 240724-->
+                </br></br></br>
+                <a href="{{ url_for('logout') }}" class="btn">Cerrar Sesión</a>
+                <!--Guido new 240724-->
+
             </div>
         </div>
     </body>
