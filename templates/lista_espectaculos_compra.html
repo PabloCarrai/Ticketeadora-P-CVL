@@ -36,9 +36,11 @@
 <td style="border: 1px solid white;">{{ espectaculo[6] }}</td>
 <td style="border: 1px solid white;">{{ espectaculo[8] }}</td>
 <td style="border: 1px solid white;">
-<form method="get" action="{{ url_for('compra_espectaculo', id_espectaculo=espectaculo[0], titulo=espectaculo[2]) }}">
+
+<form method="post" action="{{ url_for('espectaculo_compra') }}">
+
 <input type="hidden" name="ID_ESPECTACULO" value="{{ espectaculo[0] }}">
-<input type="hidden" name="titulo" value="{{ espectaculo[2] }}">
+
 <input type="submit" value="Comprar" class="btnchico">
 </form>
 </td>
