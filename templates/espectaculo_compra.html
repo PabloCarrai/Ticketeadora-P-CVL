@@ -23,7 +23,9 @@
 		<div align="center">
 		<div align="center" class="border">
 			<div class="header">
-				<h1 class="word">Espectaculo seleccionado</h1>
+                <!--Guido new 270724-->
+				<h1 class="word">Espectáculo seleccionado</h1>
+                <!--Guido new 270724-->
 			</div></br>
 			<h2 class="word">
 				<form action="{{ url_for('espectaculo_compra_confirmada') }}" method="post">
@@ -33,7 +35,9 @@
                     {% endif %}
                     <input type="hidden" name="ID_ESPECTACULO" type="text" class="textbox" value='{{ espectaculo[0] }}'/>
                     <p class="word">Nombre de la Sala: {{ espectaculo[7] }}<p>
-                    <p class="word">Espectaculo: {{ espectaculo[2] }}<p>
+                    <!--Guido new 270724-->    
+                    <p class="word">Espectáculo: {{ espectaculo[2] }}<p>
+                    <!--Guido new 270724-->    
                     <p class="word">Fecha: {{ espectaculo[3] }}<p></p>
                     <p class="word">Hora: {{ espectaculo[4] }}<p></p>
                     <p class="word">Precio : $ {{ espectaculo[6] }}<p></p>

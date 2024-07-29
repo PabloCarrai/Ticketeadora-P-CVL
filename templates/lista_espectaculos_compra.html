@@ -36,11 +36,8 @@
 <td style="border: 1px solid white;">{{ espectaculo[6] }}</td>
 <td style="border: 1px solid white;">{{ espectaculo[8] }}</td>
 <td style="border: 1px solid white;">
-
 <form method="post" action="{{ url_for('espectaculo_compra') }}">
-
 <input type="hidden" name="ID_ESPECTACULO" value="{{ espectaculo[0] }}">
-
 <input type="submit" value="Comprar" class="btnchico">
 </form>
 </td>
@@ -48,13 +45,11 @@
 {% endfor %}
 </table>
 </br></br></br>
-<input type="button" class="btn" value="Página anterior" onclick="location.href='/login'">
-
+<!--Guido new 270724 se fue boton Página anterior-->
 <!--Guido new 240724-->
 </br></br></br>
 <a href="{{ url_for('logout') }}" class="btn">Cerrar Sesión</a>
 <!--Guido new 240724-->
-
 </div>
 </div>
 </body>

@@ -10,7 +10,9 @@
 		<div align="center">
 		<div align="center" class="border">
 			<div class="header">
-				<h1 class="word">Registración</h1>
+				<!--Guido new 270724-->
+				<h1 class="word">Alta de usuarios</h1>
+				<!--Guido new 270724-->
 			</div></br></br></br>
 			<h2 class="word">
 				<form action="{{ url_for('register') }}" method="post">
@@ -18,7 +20,9 @@
 					<input id="username" name="username" type="text" placeholder="Introduzca su Usuario" class="textbox"/></br></br>
 					<input id="password" name="password" type="password" placeholder="Introduzca su Contraseña" class="textbox"/></br></br>
 					<input id="email" name="email" type="text" placeholder="Introduzca su email" class="textbox"/></br></br>
-					<input id="tipo" name="tipo" type="text" placeholder="Tipo de Usuario" class="textbox"/></br></br>
+					<!--Guido new 240724-->
+					<input id="tipo" name="tipo" type="text" placeholder="Introduzca el tipo de Usuario" class="textbox"/></br></br>
+					<!--Guido new 240724-->
 					<input type="submit" class="btn" value="Registro"></br></br>		<!--Guido new 22/07/24-->
 					<input type="button" class="btn" value="Página anterior" onClick="location.href='/home'"></br></br> <!--"history.go(-1);"></br></br>-->
 				</form>
