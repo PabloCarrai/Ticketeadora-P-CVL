@@ -43,7 +43,7 @@ def login():
 			else:
 				return redirect(url_for('lista_espectaculos_compra'))			
 		else:
-			msg = 'usuario / contraseña Incorrectos!'
+			msg = 'Usuario / Contraseña Incorrectos !' #Guido new 270724
 	return render_template('login.html', msg = msg)
 
 @app.route('/logout')
@@ -78,7 +78,7 @@ def register_comprador():
 		elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
 			msg = 'email Invalido !'
 		elif not re.match(r'[A-Za-z0-9]+', username):
-			msg = 'El Usuario debe iniciar con caracteres o numeros !'
+			msg = 'El Usuario debe iniciar con caracteres o números !'
 		elif not username or not password or not email:
 			msg = 'Por favor complete el formulario !'
 		else:
@@ -108,7 +108,7 @@ def register():
 		elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
 			msg = 'email Invalido !'
 		elif not re.match(r'[A-Za-z0-9]+', username):
-			msg = 'El Usuario debe iniciar con caracteres o numeros !'
+			msg = 'El Usuario debe iniciar con caracteres o números !'
 		elif not username or not password or not email:
 			msg = 'Por favor complete el formulario !'
 		else:
